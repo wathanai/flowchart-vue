@@ -1,9 +1,6 @@
 <template>
   <div class="container">
-    <h1 class="title">Flowchart Vue</h1>
-    <h5 class="subtitle">
-      Flowchart & Flowchart designer component for Vue.js.
-    </h5>
+    <h1 class="title">POC - Flowchart</h1>
     <div id="toolbar">
       <button
         @click="
@@ -294,10 +291,6 @@ export default {
 
 .title {
   margin-top: 10px;
-  margin-bottom: 0;
-}
-
-.subtitle {
   margin-bottom: 10px;
 }
 
