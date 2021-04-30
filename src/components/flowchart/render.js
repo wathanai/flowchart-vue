@@ -52,15 +52,7 @@ function render(g, node, isSelected) {
   // body text
   let text = node.type === 'start'
       ? 'Start'
-      : (node.type === 'end' ? 'End' : (
-              (!node.approvers || node.approvers.length === 0)
-                  ? 'No approver'
-                  : (
-                      node.approvers.length > 1
-                          ? `${node.approvers[0].name + '...'}`
-                          : node.approvers[0].name
-                  )
-          )
+      : (node.type === 'end' ? 'End' : 'Unknown'
       );
   let bodyTextY;
   if (node.type !== 'start' && node.type !== 'end') {

@@ -13,7 +13,6 @@
             y: 10,
             name: 'New',
             type: 'operation',
-            approvers: [],
           })
         "
       >
@@ -69,72 +68,126 @@ export default {
   data: function () {
     return {
       nodes: [
-        { id: 1, x: 50, y: 220, name: "Start", type: "start" },
-        { id: 2, x: 630, y: 220, name: "End", type: "end" },
+        { id: 1, x: 180, y: 20, name: "Start", type: "start" },
+        { id: 2, x: 500, y: 180, name: "End", type: "end" },
         {
           id: 3,
-          x: 340,
-          y: 130,
-          name: "Custom size",
+          x: 180,
+          y: 100,
+          name: "To Do",
           type: "operation",
-          approvers: [{ id: 1, name: "Joyce" }],
-          width: 120,
-          height: 40,
         },
         {
           id: 4,
-          x: 240,
-          y: 220,
-          name: "Operation",
+          x: 180,
+          y: 180,
+          name: "In Progress",
           type: "operation",
-          approvers: [{ id: 2, name: "Allen" }],
         },
         {
           id: 5,
-          x: 440,
-          y: 220,
-          name: "Operation",
+          x: 180,
+          y: 260,
+          name: "Ready to Merge",
           type: "operation",
-          approvers: [{ id: 3, name: "Teresa" }],
         },
+        {
+          id: 6,
+          x: 180,
+          y: 340,
+          name: "Prepare for SIT",
+          type: "operation",
+        },
+        {
+          id: 7,
+          x: 340,
+          y: 340,
+          name: "In QA",
+          type: "operation",
+        },
+        {
+          id: 8,
+          x: 500,
+          y: 340,
+          name: "QA Testing in Progress",
+          type: "operation",
+        },
+        {
+          id: 9,
+          x: 500,
+          y: 260,
+          name: "Prepare for UAT",
+          type: "operation",
+        },
+        {
+          id: 10,
+          x: 340,
+          y: 260,
+          name: "Test Failed",
+          type: "operation",
+        }
       ],
       connections: [
         {
-          source: { id: 1, position: "right" },
-          destination: { id: 4, position: "left" },
+          source: { id: 1, position: "bottom" },
+          destination: { id: 3, position: "top" },
           id: 1,
           type: "pass",
         },
         {
-          source: { id: 4, position: "right" },
-          destination: { id: 5, position: "left" },
+          source: { id: 3, position: "bottom" },
+          destination: { id: 4, position: "top" },
           id: 2,
           type: "pass",
         },
         {
-          source: { id: 5, position: "right" },
-          destination: { id: 2, position: "left" },
+          source: { id: 4, position: "bottom" },
+          destination: { id: 5, position: "top" },
           id: 3,
           type: "pass",
         },
         {
           source: { id: 5, position: "bottom" },
-          destination: { id: 4, position: "bottom" },
+          destination: { id: 6, position: "top" },
           id: 4,
-          type: "reject",
+          type: "pass",
         },
         {
-          source: { id: 1, position: "top" },
-          destination: { id: 3, position: "left" },
+          source: { id: 6, position: "right" },
+          destination: { id: 7, position: "left" },
           id: 5,
           type: "pass",
         },
         {
-          source: { id: 3, position: "right" },
-          destination: { id: 2, position: "top" },
+          source: { id: 7, position: "right" },
+          destination: { id: 8, position: "left" },
           id: 6,
           type: "pass",
         },
+        {
+          source: { id: 8, position: "top" },
+          destination: { id: 9, position: "bottom" },
+          id: 7,
+          type: "pass",
+        },
+        {
+          source: { id: 9, position: "top" },
+          destination: { id: 2, position: "bottom" },
+          id: 8,
+          type: "pass",
+        },
+        {
+          source: { id: 7, position: "top" },
+          destination: { id: 10, position: "bottom" },
+          id: 9,
+          type: "reject",
+        },
+        {
+          source: { id: 10, position: "top" },
+          destination: { id: 4, position: "right" },
+          id: 10,
+          type: "reject",
+        }
       ],
       nodeForm: { target: null },
       connectionForm: { target: null, operation: null },
@@ -150,8 +203,7 @@ export default {
         x: position.x,
         y: position.y,
         name: "New",
-        type: "operation",
-        approvers: [],
+        type: "operation"
       });
     },
     async handleChartSave(nodes, connections) {
@@ -173,57 +225,29 @@ export default {
       node.width = node.width || 120;
       node.height = node.height || 60;
       let borderColor = isSelected ? "#666666" : "#bbbbbb";
-      if (node.type !== "start" && node.type !== "end") {
-        // title
-        if (node.id !== 3) {
-          g.append("rect")
-            .attr("x", node.x)
-            .attr("y", node.y)
-            .attr("stroke", borderColor)
-            .attr("class", "title")
-            .style("height", "20px")
-            .style("fill", "#f1f3f4")
-            .style("stroke-width", "1px")
-            .style("width", node.width + "px");
-          g.append("text")
-            .attr("x", node.x + 4)
-            .attr("y", node.y + 15)
-            .attr("class", "unselectable")
-            .text(() => node.name)
-            .each(function wrap() {
-              let self = d3.select(this),
-                textLength = self.node().getComputedTextLength(),
-                text = self.text();
-              while (textLength > node.width - 2 * 4 && text.length > 0) {
-                text = text.slice(0, -1);
-                self.text(text + "...");
-                textLength = self.node().getComputedTextLength();
-              }
-            });
-        }
-      }
       // body
-      if (node.id === 3) {
-        let body = g.append("ellipse").attr("class", "body");
-        body.attr("cx", node.x + node.width / 2);
-        body.attr("cy", node.y + node.height / 2);
-        body.attr("rx", node.width / 2);
-        body.attr("ry", node.height / 2);
-        body.style("fill", "white");
-        body.style("stroke-width", "1px");
-        body.classed(node.type, true);
-        body.attr("stroke", borderColor);
-      } else {
+      // if (node.id === 3) {
+      //   let body = g.append("ellipse").attr("class", "body");
+      //   body.attr("cx", node.x + node.width / 2);
+      //   body.attr("cy", node.y + node.height / 2);
+      //   body.attr("rx", node.width / 2);
+      //   body.attr("ry", node.height / 2);
+      //   body.style("fill", "#0000ff"); // Blue
+      //   body.style("stroke-width", "1px");
+      //   body.classed(node.type, true);
+      //   body.attr("stroke", borderColor);
+      // } else {
         let body = g.append("rect").attr("class", "body");
         body
           .style("width", node.width + "px")
-          .style("fill", "white")
           .style("stroke-width", "1px");
         if (node.type !== "start" && node.type !== "end") {
-          body.attr("x", node.x).attr("y", node.y + 20);
-          body.style("height", roundTo20(node.height - 20) + "px");
+          body.attr("x", node.x).attr("y", node.y);
+          body.style("height", roundTo20(node.height) + "px")
+              .style("fill", "#ffff00") // Yellow
         } else {
           body
+            .style("fill", "#ff0000") // Red
             .attr("x", node.x)
             .attr("y", node.y)
             .classed(node.type, true)
@@ -231,7 +255,7 @@ export default {
           body.style("height", roundTo20(node.height) + "px");
         }
         body.attr("stroke", borderColor);
-      }
+      // }
 
       // body text
       let text =
@@ -239,18 +263,14 @@ export default {
           ? "Start"
           : node.type === "end"
           ? "End"
-          : !node.approvers || node.approvers.length === 0
-          ? "No approver"
-          : node.approvers.length > 1
-          ? `${node.approvers[0].name + "..."}`
-          : node.approvers[0].name;
+          : node.name
       let bodyTextY;
       if (node.type !== "start" && node.type !== "end") {
-        if (node.id === 3) {
-          bodyTextY = node.y + 25;
-        } else {
-          bodyTextY = node.y + 25 + roundTo20(node.height - 20) / 2;
-        }
+        // if (node.id === 3) {
+        //   bodyTextY = node.y + 25;
+        // } else {
+          bodyTextY = node.y + 15 + roundTo20(node.height - 20) / 2;
+        // }
       } else {
         bodyTextY = node.y + 5 + roundTo20(node.height) / 2;
       }

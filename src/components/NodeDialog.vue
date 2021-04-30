@@ -15,13 +15,6 @@
                         {{item.name}}
                     </option>
                 </select>
-                <label for="approver">Approver</label>
-                <select class="form-control" id="approver" :value="nodeForm.approver.id"
-                        @change="handleChangeApprover($event)">
-                    <option :value="item.id" :key="'approver-' + item.id" v-for="item in approvers">
-                        {{item.name}}
-                    </option>
-                </select>
             </div>
             <div class="footer">
                 <button @click="handleClickCancelSaveNode">Cancel</button>
@@ -46,25 +39,20 @@
     },
     data: function() {
       return {
-        nodeForm: {name: null, id: null, type: null, approver: []},
-        approvers: [{id: 1, name: 'Joyce'}, {id: 2, name: 'Allen'}, {id: 3, name: 'Teresa'}],
+        nodeForm: {name: null, id: null, type: null},
       };
     },
     methods: {
       handleClickSaveNode() {
         this.$emit('update:node', Object.assign(this.node, {
           name: this.nodeForm.name,
-          type: this.nodeForm.type,
-          approvers: [Object.assign({}, this.nodeForm.approver)],
+          type: this.nodeForm.type
         }));
         this.$emit('update:visible', false);
       },
       handleClickCancelSaveNode() {
         this.$emit('update:visible', false);
-      },
-      handleChangeApprover(e) {
-        this.nodeForm.approver = this.approvers.filter(i => i.id === parseInt(e.target.value))[0];
-      },
+      }
     },
     watch: {
       node: {
@@ -74,9 +62,6 @@
           this.nodeForm.id = val.id;
           this.nodeForm.name = val.name;
           this.nodeForm.type = val.type;
-          if (val.approvers && val.approvers.length > 0) {
-            this.nodeForm.approver = val.approvers[0];
-          }
         },
       },
     },
