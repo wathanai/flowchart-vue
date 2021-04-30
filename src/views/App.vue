@@ -12,7 +12,7 @@
             x: 10,
             y: 10,
             name: 'New',
-            type: 'operation',
+            type: 'process',
           })
         "
       >
@@ -45,7 +45,7 @@
     <connection-dialog
       :visible.sync="connectionDialogVisible"
       :connection.sync="connectionForm.target"
-      :operation="connectionForm.operation"
+      :process="connectionForm.process"
     >
     </connection-dialog>
   </div>
@@ -53,11 +53,11 @@
 <script>
 /* eslint-disable no-unused-vars */
 
-import ConnectionDialog from "../components/ConnectionDialog";
-import NodeDialog from "../components/NodeDialog";
-import Flowchart from "../components/flowchart/Flowchart";
-import * as d3 from "d3";
-import { roundTo20 } from "../utils/math";
+import ConnectionDialog from '../components/ConnectionDialog'
+import NodeDialog from '../components/NodeDialog'
+import Flowchart from '../components/flowchart/Flowchart'
+import * as d3 from 'd3'
+import { roundTo20 } from '../utils/math'
 
 export default {
   components: {
@@ -68,132 +68,132 @@ export default {
   data: function () {
     return {
       nodes: [
-        { id: 1, x: 180, y: 20, name: "Start", type: "start" },
-        { id: 2, x: 500, y: 180, name: "End", type: "end" },
+        { id: 1, x: 180, y: 20, name: 'Start', type: 'start' },
+        { id: 2, x: 500, y: 180, name: 'End', type: 'end' },
         {
           id: 3,
           x: 180,
           y: 100,
-          name: "To Do",
-          type: "operation",
+          name: 'To Do',
+          type: 'process',
         },
         {
           id: 4,
           x: 180,
           y: 180,
-          name: "In Progress",
-          type: "operation",
+          name: 'In Progress',
+          type: 'process',
         },
         {
           id: 5,
           x: 180,
           y: 260,
-          name: "Ready to Merge",
-          type: "operation",
+          name: 'Ready to Merge',
+          type: 'process',
         },
         {
           id: 6,
           x: 180,
           y: 340,
-          name: "Prepare for SIT",
-          type: "operation",
+          name: 'Prepare for SIT',
+          type: 'process',
         },
         {
           id: 7,
           x: 340,
           y: 340,
-          name: "In QA",
-          type: "operation",
+          name: 'In QA',
+          type: 'process',
         },
         {
           id: 8,
           x: 500,
           y: 340,
-          name: "QA Testing in Progress",
-          type: "operation",
+          name: 'QA Testing in Progress',
+          type: 'process',
         },
         {
           id: 9,
           x: 500,
           y: 260,
-          name: "Prepare for UAT",
-          type: "operation",
+          name: 'Prepare for UAT',
+          type: 'process',
         },
         {
           id: 10,
           x: 340,
           y: 260,
-          name: "Test Failed",
-          type: "operation",
-        }
+          name: 'Test Failed',
+          type: 'process',
+        },
       ],
       connections: [
         {
-          source: { id: 1, position: "bottom" },
-          destination: { id: 3, position: "top" },
+          source: { id: 1, position: 'bottom' },
+          destination: { id: 3, position: 'top' },
           id: 1,
-          type: "pass",
+          type: 'pass',
         },
         {
-          source: { id: 3, position: "bottom" },
-          destination: { id: 4, position: "top" },
+          source: { id: 3, position: 'bottom' },
+          destination: { id: 4, position: 'top' },
           id: 2,
-          type: "pass",
+          type: 'pass',
         },
         {
-          source: { id: 4, position: "bottom" },
-          destination: { id: 5, position: "top" },
+          source: { id: 4, position: 'bottom' },
+          destination: { id: 5, position: 'top' },
           id: 3,
-          type: "pass",
+          type: 'pass',
         },
         {
-          source: { id: 5, position: "bottom" },
-          destination: { id: 6, position: "top" },
+          source: { id: 5, position: 'bottom' },
+          destination: { id: 6, position: 'top' },
           id: 4,
-          type: "pass",
+          type: 'pass',
         },
         {
-          source: { id: 6, position: "right" },
-          destination: { id: 7, position: "left" },
+          source: { id: 6, position: 'right' },
+          destination: { id: 7, position: 'left' },
           id: 5,
-          type: "pass",
+          type: 'pass',
         },
         {
-          source: { id: 7, position: "right" },
-          destination: { id: 8, position: "left" },
+          source: { id: 7, position: 'right' },
+          destination: { id: 8, position: 'left' },
           id: 6,
-          type: "pass",
+          type: 'pass',
         },
         {
-          source: { id: 8, position: "top" },
-          destination: { id: 9, position: "bottom" },
+          source: { id: 8, position: 'top' },
+          destination: { id: 9, position: 'bottom' },
           id: 7,
-          type: "pass",
+          type: 'pass',
         },
         {
-          source: { id: 9, position: "top" },
-          destination: { id: 2, position: "bottom" },
+          source: { id: 9, position: 'top' },
+          destination: { id: 2, position: 'bottom' },
           id: 8,
-          type: "pass",
+          type: 'pass',
         },
         {
-          source: { id: 7, position: "top" },
-          destination: { id: 10, position: "bottom" },
+          source: { id: 7, position: 'top' },
+          destination: { id: 10, position: 'bottom' },
           id: 9,
-          type: "reject",
+          type: 'reject',
         },
         {
-          source: { id: 10, position: "top" },
-          destination: { id: 4, position: "right" },
+          source: { id: 10, position: 'top' },
+          destination: { id: 4, position: 'right' },
           id: 10,
-          type: "reject",
-        }
+          type: 'reject',
+        },
       ],
       nodeForm: { target: null },
-      connectionForm: { target: null, operation: null },
+      connectionForm: { target: null, process: null },
       nodeDialogVisible: false,
       connectionDialogVisible: false,
-    };
+    }
   },
   async mounted() {},
   methods: {
@@ -202,11 +202,13 @@ export default {
         id: +new Date(),
         x: position.x,
         y: position.y,
-        name: "New",
-        type: "operation"
-      });
+        name: 'New',
+        type: 'process',
+      })
     },
     async handleChartSave(nodes, connections) {
+      console.log(nodes);
+      console.log(connections)
       // axios.post(url, {nodes, connection}).then(resp => {
       //   this.nodes = resp.nodes;
       //   this.connections = resp.connections;
@@ -214,87 +216,76 @@ export default {
       // });
     },
     handleEditNode(node) {
-      this.nodeForm.target = node;
-      this.nodeDialogVisible = true;
+      this.nodeForm.target = node
+      this.nodeDialogVisible = true
     },
     handleEditConnection(connection) {
-      this.connectionForm.target = connection;
-      this.connectionDialogVisible = true;
+      this.connectionForm.target = connection
+      this.connectionDialogVisible = true
     },
     render: function (g, node, isSelected) {
-      node.width = node.width || 120;
-      node.height = node.height || 60;
-      let borderColor = isSelected ? "#666666" : "#bbbbbb";
+      node.width = node.width || 120
+      node.height = node.height || 40
+      let borderColor = '#000'
       // body
-      // if (node.id === 3) {
-      //   let body = g.append("ellipse").attr("class", "body");
-      //   body.attr("cx", node.x + node.width / 2);
-      //   body.attr("cy", node.y + node.height / 2);
-      //   body.attr("rx", node.width / 2);
-      //   body.attr("ry", node.height / 2);
-      //   body.style("fill", "#0000ff"); // Blue
-      //   body.style("stroke-width", "1px");
-      //   body.classed(node.type, true);
-      //   body.attr("stroke", borderColor);
-      // } else {
-        let body = g.append("rect").attr("class", "body");
+      let body = g.append('rect').attr('class', 'body')
+      body.style('width', node.width + 'px').style('stroke-width', '2px')
+      if (node.type !== 'start' && node.type !== 'end') {
+        borderColor = '#AFDCED'
+        body.attr('x', node.x).attr('y', node.y)
+        body.style('height', roundTo20(node.height) + 'px')
+      } else {
+        // Start, End
+        borderColor = '#BCE954'
         body
-          .style("width", node.width + "px")
-          .style("stroke-width", "1px");
-        if (node.type !== "start" && node.type !== "end") {
-          body.attr("x", node.x).attr("y", node.y);
-          body.style("height", roundTo20(node.height) + "px")
-              .style("fill", "#ffff00") // Yellow
-        } else {
-          body
-            .style("fill", "#ff0000") // Red
-            .attr("x", node.x)
-            .attr("y", node.y)
-            .classed(node.type, true)
-            .attr("rx", 30);
-          body.style("height", roundTo20(node.height) + "px");
-        }
-        body.attr("stroke", borderColor);
+          .attr('x', node.x)
+          .attr('y', node.y)
+          .classed(node.type, true)
+          .attr('rx', 30)
+        body.style('height', roundTo20(node.height) + 'px')
+      }
+      if (isSelected) {
+        borderColor = '#666666'
+      }
+      body.attr('stroke', borderColor).style('fill', '#ffffff')
       // }
 
       // body text
+      let textColor = node.type === 'start' || node.type ==='end' ? '#437C17' : '#141B8D'
       let text =
-        node.type === "start"
-          ? "Start"
-          : node.type === "end"
-          ? "End"
+        node.type === 'start'
+          ? 'Start'
+          : node.type === 'end'
+          ? 'End'
           : node.name
-      let bodyTextY;
-      if (node.type !== "start" && node.type !== "end") {
-        // if (node.id === 3) {
-        //   bodyTextY = node.y + 25;
-        // } else {
-          bodyTextY = node.y + 15 + roundTo20(node.height - 20) / 2;
-        // }
+      let bodyTextY
+      if (node.type !== 'start' && node.type !== 'end') {
+        bodyTextY = node.y + 15 + roundTo20(node.height - 20) / 2
       } else {
-        bodyTextY = node.y + 5 + roundTo20(node.height) / 2;
+        bodyTextY = node.y + 5 + roundTo20(node.height) / 2
       }
-      g.append("text")
-        .attr("x", node.x + node.width / 2)
-        .attr("y", bodyTextY)
-        .attr("class", "unselectable")
-        .attr("text-anchor", "middle")
+      g.append('text')
+        .attr('x', node.x + node.width / 2)
+        .attr('y', bodyTextY)
+        .attr('class', 'unselectable')
+        .attr('fill', textColor)
+        .attr('text-anchor', 'middle')
         .text(function () {
-          return text;
+          return text
         })
         .each(function wrap() {
           let self = d3.select(this),
             textLength = self.node().getComputedTextLength(),
-            text = self.text();
+            text = self.text()
           while (textLength > node.width - 2 * 4 && text.length > 0) {
-            text = text.slice(0, -1);
-            self.text(text + "...");
-            textLength = self.node().getComputedTextLength();
+            text = text.slice(0, -1)
+            self.text(text + '...')
+            textLength = self.node().getComputedTextLength()
           }
-        });
+        })
     },
   },
-};
+}
 </script>
 <style scoped>
 #toolbar {

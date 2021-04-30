@@ -57,3 +57,9 @@
 #svg .selection.active {
     display: block;
 }
+
+body {
+    font-family: -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Oxygen,Ubuntu,'Fira Sans','Droid Sans','Helvetica Neue',sans-serif;
+    font-weight: bold;
+    font-size: 11px;
+}
